@@ -634,9 +634,14 @@ gui_start()
 			if [ ! -d "${WWWPATH}/ext" ]; then
 				mkdir -p ${WWWPATH}/ext
 			fi
+			if [ ! -d "${CWDIR}/gui/ext/bastille" ]; then
+				mkdir -p ${CWDIR}/gui/ext/bastille
+			fi
 			ln -fhs ${CWDIR}/gui/ext/bastille ${WWWPATH}/ext/ || error_notify "Error: A problem has occurred while copying extension gui files."
 			ln -fhs ${CWDIR}/gui/images ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension gui files."
 			ln -fhs ${CWDIR}/gui/bastille_manager_*.php ${WWWPATH}/ || error_notify "Error: A problem has occurred while linking extension gui files."
+			ln -fhs ${CWDIR}/gui/js ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension js files."
+			ln -fhs ${CWDIR}/gui/css ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension css files."
 		fi
 	fi
 }
@@ -651,8 +656,13 @@ gui_enable()
 		if [ ! -d "${WWWPATH}/ext" ]; then
 			mkdir -p ${WWWPATH}/ext
 		fi
+		if [ ! -d "${CWDIR}/gui/ext/bastille" ]; then
+			mkdir -p ${CWDIR}/gui/ext/bastille
+		fi
 		ln -fhs ${CWDIR}/gui/ext/bastille ${WWWPATH}/ext/ || error_notify "Error: A problem has occurred while copying extension gui files."
 		ln -fhs ${CWDIR}/gui/images ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension gui files."
+		ln -fhs ${CWDIR}/gui/js ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension js files."
+		ln -fhs ${CWDIR}/gui/css ${WWWPATH}/ext/bastille/ || error_notify "Error: A problem has occurred while copying extension css files."
 		ln -fhs ${CWDIR}/gui/bastille_manager_*.php ${WWWPATH}/ || error_notify "Error: A problem has occurred while copying extension gui files."
 		exit 0
 	else
@@ -669,6 +679,8 @@ gui_disable()
 		rm -f ${WWWPATH}bastille_manager_*.php
 		rm -rf ${WWWPATH}/ext/bastille
 		rm -rf ${WWWPATH}/ext/bastille/images
+		rm -rf ${WWWPATH}/ext/bastille/js
+		rm -rf ${WWWPATH}/ext/bastille/css
 		rm -rf ${LOCALSHAREPATH}/locale-bastille
 		rm -rf ${BASTILLECONFLINK}
 		sysrc -f ${CWDIR}${EXTCONF} GUI_ENABLE=NO >/dev/null 2>&1 || error_notify "Error: A problem while removing extension gui files."
